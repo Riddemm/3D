@@ -6,13 +6,37 @@ window.addEventListener('DOMContentLoaded', function () {
     let timerMinutes = document.querySelector('#timer-minutes');
     let timerSeconds = document.querySelector('#timer-seconds');
 
+    // Добавляет 0 в начало, если число меньше 10
+    let formatDate = function (date) {
+      if (date < 10) {
+        return date = '0' + date;
+      }
+      return date;
+    };
+
     function getTimeRemaining() {
       let dateStop = new Date(deadline).getTime();
       let dateNow = new Date().getTime();
       let timeRemaining = (dateStop - dateNow) / 1000;
-      let seconds = Math.floor(timeRemaining % 60);
-      let minutes = Math.floor(timeRemaining / 60 % 60);
-      let hours = Math.floor(timeRemaining / 3600);
+
+      let seconds = 0;
+      let minutes = 0;
+      let hours = 0;
+
+      if (timeRemaining > 0) {
+        seconds = Math.floor(timeRemaining % 60);
+        minutes = Math.floor(timeRemaining / 60 % 60);
+        hours = Math.floor(timeRemaining / 3600);
+      }
+
+      if (timeRemaining <= 0) {
+        dateStop = new Date(deadline).getTime() + 3600 * 24 * 1000;
+        timeRemaining = (dateStop - dateNow) / 1000;
+        seconds = Math.floor(timeRemaining % 60);
+        minutes = Math.floor(timeRemaining / 60 % 60);
+        hours = Math.floor(timeRemaining / 3600);
+      }
+
       return {
         timeRemaining,
         hours,
@@ -23,20 +47,19 @@ window.addEventListener('DOMContentLoaded', function () {
 
     function updateCLock() {
       let timer = getTimeRemaining();
+      console.log(timer.timeRemaining);
 
-      timerHours.textContent = timer.hours;
-      timerMinutes.textContent = timer.minutes;
-      timerSeconds.textContent = timer.seconds;
 
-      if (timer.timeRemaining > 0) {
-        setTimeout(updateCLock, 1000);
-      }
+      timerHours.textContent = formatDate(timer.hours);
+      timerMinutes.textContent = formatDate(timer.minutes);
+      timerSeconds.textContent = formatDate(timer.seconds);
+
+      setTimeout(updateCLock, 1000);
+
     }
 
     updateCLock();
-
   }
 
-  // countTimer('01 march 2020')
-  setInterval(countTimer, 1000, '01 march 2020');
+  setInterval(countTimer, 1000, '2020-02-18 00:00:00');
 })
