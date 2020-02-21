@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  console.dir(screen);
+
   function countTimer(deadline) {
     let timerHours = document.querySelector('#timer-hours');
     let timerMinutes = document.querySelector('#timer-minutes');
@@ -88,24 +90,43 @@ window.addEventListener('DOMContentLoaded', function () {
 
   toggleMenu();
 
-    // Popup
+  // Popup
 
-    const togglePopup = () => {
+  const togglePopup = () => {
 
-      const popup = document.querySelector('.popup');
-      const popupBtn = document.querySelectorAll('.popup-btn');
-      const popupClose = document.querySelector('.popup-close');
+    const popup = document.querySelector('.popup');
+    const popupBtn = document.querySelectorAll('.popup-btn');
+    const popupClose = document.querySelector('.popup-close');
+    const popupContent = document.querySelector('.popup-content');
 
-      popupBtn.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          popup.style.display = 'block';
-        });
+    popupBtn.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        popup.style.display = 'block';
+        if (screen.width > 768) {
+          popupContent.style.top = 0;
+          let start = Date.now(); // время начала
+
+          let timer = setInterval(function () {
+            let timePassed = Date.now() - start;     // времени прошло
+
+            if (timePassed >= 1000) {
+              clearInterval(timer); // закончить анимацию через секунду
+              return;
+            }
+
+            // отрисовать анимацию на момент timePassed, прошедший с начала анимации
+            popupContent.style.top = timePassed / 10 + 'px';
+
+          }, 20);
+        }
       });
+    });
 
-      popupClose.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
-    };
+    popupClose.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
 
-    togglePopup();
+  };
+
+  togglePopup();
 })
