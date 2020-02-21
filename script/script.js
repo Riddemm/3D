@@ -1,8 +1,6 @@
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  console.dir(screen);
-
   function countTimer(deadline) {
     let timerHours = document.querySelector('#timer-hours');
     let timerMinutes = document.querySelector('#timer-minutes');
@@ -59,7 +57,7 @@ window.addEventListener('DOMContentLoaded', function () {
     updateCLock();
   }
 
-  countTimer('2020-02-22 00:00:01');
+  countTimer('2020-02-23 00:00:01');
 
   // Меню
 
@@ -107,16 +105,14 @@ window.addEventListener('DOMContentLoaded', function () {
           let start = Date.now(); // время начала
 
           let timer = setInterval(function () {
-            let timePassed = Date.now() - start;     // времени прошло
+            let timePassed = Date.now() - start; // времени прошло
 
             if (timePassed >= 1000) {
               clearInterval(timer); // закончить анимацию через секунду
               return;
             }
 
-            // отрисовать анимацию на момент timePassed, прошедший с начала анимации
             popupContent.style.top = timePassed / 10 + 'px';
-
           }, 20);
         }
       });
@@ -125,8 +121,25 @@ window.addEventListener('DOMContentLoaded', function () {
     popupClose.addEventListener('click', () => {
       popup.style.display = 'none';
     });
-
   };
 
   togglePopup();
+
+  // Плавная прокрутка страницы
+
+  let serviceLink = document.querySelector('.service-link');
+  serviceLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    let start = Date.now(); // время начала
+
+    let timer = setInterval(function () {
+      let timePassed = Date.now() - start; // времени прошло
+
+      if (document.documentElement.scrollTop > 840) {
+        clearInterval(timer);
+        return;
+      }
+      document.documentElement.scrollTop += timePassed / 100;
+    }, 20);
+  })
 })
