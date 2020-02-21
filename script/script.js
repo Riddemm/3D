@@ -31,10 +31,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
       if (timeRemaining <= 0) {
         dateStop = new Date(deadline).getTime() + 3600 * 24 * 1000;
-        timeRemaining = (dateStop - dateNow) / 1000;
-        seconds = Math.floor(timeRemaining % 60);
-        minutes = Math.floor(timeRemaining / 60 % 60);
-        hours = Math.floor(timeRemaining / 3600);
+        let newDeadline = new Date(dateStop);
+        countTimer(newDeadline);
       }
 
       return {
@@ -47,8 +45,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
     function updateCLock() {
       let timer = getTimeRemaining();
-      console.log(timer.timeRemaining);
-
 
       timerHours.textContent = formatDate(timer.hours);
       timerMinutes.textContent = formatDate(timer.minutes);
@@ -61,5 +57,55 @@ window.addEventListener('DOMContentLoaded', function () {
     updateCLock();
   }
 
-  setInterval(countTimer, 1000, '2020-02-18 00:00:00');
+  countTimer('2020-02-22 00:00:01');
+
+  // Меню
+
+  const toggleMenu = () => {
+
+    const btnMenu = document.querySelector('.menu');
+    const menu = document.querySelector('menu');
+    const closeBtn = document.querySelector('.close-btn');
+    const menuItems = menu.querySelectorAll('ul > li');
+
+    const handlerMenu = () => {
+      // if (!menu.style.transform || menu.style.transform === 'translateX(-100%)') {
+      //   menu.style.transform = 'translateX(0)'; // открыть меню
+      // } else {
+      //   menu.style.transform = 'translateX(-100%)'; // закрыть меню
+      // }
+      menu.classList.toggle('active-menu');
+    };
+
+    btnMenu.addEventListener('click', handlerMenu);
+
+    closeBtn.addEventListener('click', handlerMenu);
+
+    menuItems.forEach((item) => {
+      item.addEventListener('click', handlerMenu);
+    })
+  }
+
+  toggleMenu();
+
+    // Popup
+
+    const togglePopup = () => {
+
+      const popup = document.querySelector('.popup');
+      const popupBtn = document.querySelectorAll('.popup-btn');
+      const popupClose = document.querySelector('.popup-close');
+
+      popupBtn.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          popup.style.display = 'block';
+        });
+      });
+
+      popupClose.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+    };
+
+    togglePopup();
 })
