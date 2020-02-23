@@ -94,7 +94,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
     const popup = document.querySelector('.popup');
     const popupBtn = document.querySelectorAll('.popup-btn');
-    const popupClose = document.querySelector('.popup-close');
     const popupContent = document.querySelector('.popup-content');
 
     popupBtn.forEach((btn) => {
@@ -118,15 +117,25 @@ window.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    popupClose.addEventListener('click', () => {
-      popup.style.display = 'none';
+    popup.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('popup-close')) {
+        popup.style.display = 'none';
+      } else {
+        target = target.closest('.popup-content');
+      
+        if (!target) {
+          popup.style.display = 'none';
+        }
+      }
     });
+
   };
 
   togglePopup();
 
   // Плавная прокрутка страницы
-
   let serviceLink = document.querySelector('.service-link');
   serviceLink.addEventListener('click', (event) => {
     event.preventDefault();
@@ -141,5 +150,38 @@ window.addEventListener('DOMContentLoaded', function () {
       }
       document.documentElement.scrollTop += timePassed / 100;
     }, 20);
-  })
+  });
+
+  // Табы
+  const tabs = () => {
+    const tabHeader = document.querySelector('.service-header');
+    const tabs = tabHeader.querySelectorAll('.service-header-tab');
+    const tabsContent = document.querySelectorAll('.service-tab');
+
+    const toggleTabContent = (index) => {
+      for (let i = 0; i < tabsContent.length; i++) {
+        if (index === i) {
+          tabs[i].classList.add('active');
+          tabsContent[i].classList.remove('d-none');
+        } else {
+          tabs[i].classList.remove('active');
+          tabsContent[i].classList.add('d-none');
+        }
+      }
+    };
+    
+    tabHeader.addEventListener('click', (event) => {
+      let target = event.target;
+      target = target.closest('.service-header-tab');
+      if (target) {
+        tabs.forEach((item, i) => {
+          if (item === target) {
+            toggleTabContent(i);
+          }
+        });
+      }
+    });
+  };
+   
+  tabs();
 })
