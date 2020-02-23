@@ -66,24 +66,39 @@ window.addEventListener('DOMContentLoaded', function () {
     const btnMenu = document.querySelector('.menu');
     const menu = document.querySelector('menu');
     const closeBtn = document.querySelector('.close-btn');
-    const menuItems = menu.querySelectorAll('ul > li');
+    const menuLinks = menu.querySelectorAll('ul > li > a');
 
     const handlerMenu = () => {
-      // if (!menu.style.transform || menu.style.transform === 'translateX(-100%)') {
-      //   menu.style.transform = 'translateX(0)'; // открыть меню
-      // } else {
-      //   menu.style.transform = 'translateX(-100%)'; // закрыть меню
-      // }
       menu.classList.toggle('active-menu');
     };
 
-    btnMenu.addEventListener('click', handlerMenu);
+    document.addEventListener('click', () => {
+      let target = event.target;
+      let a = false;
+      console.log(target);
 
-    closeBtn.addEventListener('click', handlerMenu);
+      menuLinks.forEach((link) => {
+        if (link === target) {
+          a = true;
+        }
+      });
 
-    menuItems.forEach((item) => {
-      item.addEventListener('click', handlerMenu);
-    })
+      btnMenu.childNodes.forEach((child) => {
+        if (child === target) {
+          a = true;
+        }
+      });
+
+      if (target === closeBtn || target === btnMenu || a === true) {
+        handlerMenu();
+      } else {
+        target = target.closest('menu');
+
+        if (!target && menu.classList.contains('active-menu')) {
+          handlerMenu();
+        }
+      }
+    });
   }
 
   toggleMenu();
@@ -124,7 +139,7 @@ window.addEventListener('DOMContentLoaded', function () {
         popup.style.display = 'none';
       } else {
         target = target.closest('.popup-content');
-      
+
         if (!target) {
           popup.style.display = 'none';
         }
@@ -169,7 +184,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
       }
     };
-    
+
     tabHeader.addEventListener('click', (event) => {
       let target = event.target;
       target = target.closest('.service-header-tab');
@@ -182,6 +197,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
-   
+
   tabs();
 })
