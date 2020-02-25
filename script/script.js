@@ -215,7 +215,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
     const dots = document.querySelectorAll('.dot');
     dots[0].classList.add('dot-active');
-  
+
     let currentSlide = 0;
     let interval;
 
@@ -330,4 +330,14 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // Калькулятор
+
+  const calc = document.querySelector('.calc');
+  const calcInputs = calc.querySelectorAll('[type="number"]');
+
+  calcInputs.forEach((input) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/D/g, '');
+    });
+  });
 })
