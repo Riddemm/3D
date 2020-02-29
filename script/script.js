@@ -1,6 +1,10 @@
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+
   function countTimer(deadline) {
     let timerHours = document.querySelector('#timer-hours');
     let timerMinutes = document.querySelector('#timer-minutes');
@@ -19,19 +23,19 @@ window.addEventListener('DOMContentLoaded', function () {
       let dateNow = new Date().getTime();
       let timeRemaining = (dateStop - dateNow) / 1000;
 
-      let seconds = 0;
-      let minutes = 0;
-      let hours = 0;
-
       if (timeRemaining > 0) {
         seconds = Math.floor(timeRemaining % 60);
         minutes = Math.floor(timeRemaining / 60 % 60);
         hours = Math.floor(timeRemaining / 3600);
       }
 
-      if (timeRemaining <= 0) {
+      if (timeRemaining < 0) {
         dateStop = new Date(deadline).getTime() + 3600 * 24 * 1000;
         let newDeadline = new Date(dateStop);
+        timeRemaining = (dateStop - dateNow) / 1000;
+        seconds = Math.floor(timeRemaining % 60);
+        minutes = Math.floor(timeRemaining / 60 % 60);
+        hours = Math.floor(timeRemaining / 3600);
         countTimer(newDeadline);
       }
 
@@ -57,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function () {
     updateCLock();
   }
 
-  countTimer('2020-02-23 00:00:01');
+  countTimer('2020-02-20 00:00:01');
 
   // Меню
 
