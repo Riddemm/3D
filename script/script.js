@@ -369,7 +369,9 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     };
 
+    let interval;
     const animateCount = () => {
+      interval = requestAnimationFrame(animateCount);
       if (totalOld > total) {
         totalOld--;
       } else if (totalOld < total) {
@@ -385,7 +387,7 @@ window.addEventListener('DOMContentLoaded', function () {
         countSum();
         console.log(totalOld);
         console.log(total);
-        let interval = setInterval(animateCount, 10);
+        interval = requestAnimationFrame(animateCount);
       }
     })
 
