@@ -476,32 +476,32 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // Отправка ajax-form
 
-  const sendForm = () => {
-    const errorMessage = 'Что-то пошло не так';
-    const loadMessage = 'Загрузка...';
-    const successMessage = 'Ваша заявка отправлена';
+  // const sendForm = () => {
+  //   const errorMessage = 'Что-то пошло не так';
+  //   const loadMessage = 'Загрузка...';
+  //   const successMessage = 'Ваша заявка отправлена';
 
-    const form = document.getElementById('form1');
+  //   const form = document.getElementById('form1');
 
-    const statusMessage = document.createElement('div');
-    statusMessage.style.cssText = 'font-size: 2rem';
+  //   const statusMessage = document.createElement('div');
+  //   statusMessage.style.cssText = 'font-size: 2rem';
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      form.append(statusMessage);
+  //   form.addEventListener('submit', (event) => {
+  //     event.preventDefault();
+  //     form.append(statusMessage);
 
-      const request = new XMLHttpRequest();
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'multipart/form-data');
-      const formData = new FormData(form);
-      request.send(formData);
+  //     const request = new XMLHttpRequest();
+  //     request.open('POST', './server.php');
+  //     request.setRequestHeader('Content-Type', 'multipart/form-data');
+  //     const formData = new FormData(form);
+  //     request.send(formData);
 
-      request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage;
-      })
-    })
-  }
+  //     request.addEventListener('readystatechange', () => {
+  //       statusMessage.textContent = loadMessage;
+  //     })
+  //   })
+  // }
 
-  sendForm();
+  // sendForm();
 
 })

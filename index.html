@@ -413,6 +413,37 @@
 		</div>
 	</div>
 
+	<script src="plugins/validator/validator.js"></script>
+
+	<script>
+		const valid = new Validator({
+			selector: '#form2',
+			pattern: {
+				phone: /^\+?[78]([-()]*\d){10}$/,
+				name: /^[А-Яа-я]+$/
+			},
+			method: {
+				'form2-name': [
+					['notEmpty'],
+					['pattern', 'name'],
+				],
+				'form2-phone': [
+					['notEmpty'],
+					['pattern', 'phone'],
+				],
+				'form2-email': [
+					['notEmpty'],
+					['pattern', 'email'],
+				],
+				'form2-message': [
+					['notEmpty'],
+					['pattern', 'name'],
+				]
+			}
+		});
+		valid.init();
+	</script>
+
 	<script src="script/script.js"></script>
 </body>
 
