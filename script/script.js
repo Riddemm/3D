@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', function () {
         clearInterval(timer);
         return;
       }
-      document.documentElement.scrollTop += timePassed / 100;
+      document.documentElement.scrollTop += timePassed / 1000;
     }, time);
   }
 
@@ -121,13 +121,13 @@ window.addEventListener('DOMContentLoaded', function () {
       scrollPage(getCoords(menuPortfolio).top, 5);
     }
     if (target === menuCalcLink) {
-      scrollPage(getCoords(menuCalc).top, 10);
+      scrollPage(getCoords(menuCalc).top, 5);
     }
     if (target === menuCommandLink) {
-      scrollPage(getCoords(menuCommand).top, 10);
+      scrollPage(getCoords(menuCommand).top, 5);
     }
     if (target === menuConnectLink) {
-      scrollPage(getCoords(menuConnect).top, 10);
+      scrollPage(getCoords(menuConnect).top, 5);
     }
   });
 
@@ -426,7 +426,7 @@ window.addEventListener('DOMContentLoaded', function () {
       let expCount = total - totalOld;
 
       if (totalOld > total) {
-         if (expCount < 10000) {
+        if (expCount < 10000) {
           totalOld -= 1000;
         } else if (expCount < 1000) {
           totalOld -= 100;
@@ -491,14 +491,35 @@ window.addEventListener('DOMContentLoaded', function () {
       form.append(statusMessage);
 
       const request = new XMLHttpRequest();
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'multipart/form-data');
-      const formData = new FormData(form);
-      request.send(formData);
 
       request.addEventListener('readystatechange', () => {
         statusMessage.textContent = loadMessage;
+
+        if (request.readyState !== 4) {
+          return;
+        }
+
+        if (request.status === 200) {
+          statusMessage.textContent = successMessage;
+        } else {
+          statusMessage.textContent = errorMessage;
+        }
       })
+
+      request.open('POST', './server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      const formData = new FormData(form);
+      // request.send(formData);
+
+      // Отправка в формате JSON
+      let body = {};
+
+      formData.forEach((key, val) => {
+        body[key] = val;
+      })
+
+      request.send(JSON.stringify(body));
+
     })
   }
 
