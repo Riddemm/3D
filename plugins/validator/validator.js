@@ -20,8 +20,8 @@ class Validator {
     this.applyStyle();
     this.setPattern();
 
-    // this.checkIt.bind(this)) - контекст вызова функции должен относиться к классу Validator
     this.elementsForm.forEach(elem => elem.addEventListener('change', this.checkIt.bind(this)));
+    // this.checkIt.bind(this)) - контекст вызова функции должен относиться к классу Validator
 
     this.form.addEventListener('submit', (event) => {
 
@@ -51,21 +51,18 @@ class Validator {
       }
     };
 
-
     if (this.method) { // если пользователь передал методы
-
       const method = this.method[elem.id]; // Получаем значение свойства в объекте method (массив с массивами)
-
       if (method) {
-        return method.every(item => { // Перебор массивов в массиве
-          validatorMethod[item[0]](elem, this.pattern[item[1]]); 
+        return method.every(item => { // Перебор массивов в массиве, проверка выполнения условия
+          return validatorMethod[item[0]](elem, this.pattern[item[1]]);
           // validatorMethod[item[0]] - обращаемся к функции notEmpty или pattern (первый элемент массива из большого массива)
           // (elem, this.pattern[item[1]]) - вызываем функцию, второй параметр - для pattern (обращаемся к значению объекта pattern по имени ключа,
           // имя ключа = item[1] - второй элемент массива из большого массива)
         });
       }
     } else {
-      console.warn('Необходимо передать id полей ввода и методы проверки этих полей')
+      console.warn('Необходимо передать id полей ввода и методы проверки этих полей');
     }
 
     return true;
@@ -139,6 +136,5 @@ class Validator {
     if (!this.pattern.email) {
       this.pattern.email = /^\w+@\w+\.\w{2,}$/;
     }
-    console.log(this.pattern);
   }
 }
