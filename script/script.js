@@ -56,14 +56,15 @@ window.addEventListener('DOMContentLoaded', function () {
       timerMinutes.textContent = formatDate(timer.minutes);
       timerSeconds.textContent = formatDate(timer.seconds);
 
-      setTimeout(updateCLock, 1000);
-
+      if (timer.timeRemaining >= 0) {
+        setTimeout(updateCLock, 1000);
+      }
     }
 
     updateCLock();
   }
 
-  countTimer('2020-03-05 00:00:01');
+  countTimer('2020-02-29 00:00:01');
 
   // Плавная прокрутка страницы
 
@@ -397,6 +398,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const totalValue = calcBlock.querySelector('#total');
     let total = 0;
     let totalOld = 0;
+    let interval;
 
     const countSum = () => {
       let countValue = 1;
@@ -419,13 +421,36 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    let interval;
     const animateCount = () => {
       interval = requestAnimationFrame(animateCount);
+      let expCount = total - totalOld;
+
       if (totalOld > total) {
-        totalOld--;
+         if (expCount < 10000) {
+          totalOld -= 1000;
+        } else if (expCount < 1000) {
+          totalOld -= 100;
+        } else if (expCount < 100) {
+          totalOld -= 10;
+        } else if (expCount < 0) {
+          totalOld--;
+        } else {
+          cancelAnimationFrame(interval);
+        }
       } else if (totalOld < total) {
-        totalOld++;
+        if (expCount > 10000) {
+          totalOld += 1000;
+        } else if (expCount > 1000) {
+          totalOld += 100;
+        } else if (expCount > 100) {
+          totalOld += 10;
+        } else if (expCount > 0) {
+          totalOld++;
+        } else {
+          cancelAnimationFrame(interval);
+        }
+      } else {
+        cancelAnimationFrame(interval);
       }
       totalValue.textContent = totalOld;
     };
