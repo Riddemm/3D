@@ -484,10 +484,13 @@ window.addEventListener('DOMContentLoaded', function () {
     const loadMessage = 'Загрузка...';
     const successMessage = 'Ваша заявка отправлена';
 
+    const statusImage = document.createElement('img');
+    statusImage.setAttribute('src', './images/load.png');
+
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem';
 
-    const postData = (body, outputData, errorData) => {
+    const postData = (body, valid, outputData, errorData) => {
       const request = new XMLHttpRequest();
 
       request.addEventListener('readystatechange', () => {
@@ -495,7 +498,7 @@ window.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        if (request.status === 200) {
+        if (request.status === 200 && valid === true) {
           outputData();
         } else {
           errorData(request.status);
@@ -510,8 +513,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+
       form.append(statusMessage);
       statusMessage.textContent = loadMessage;
+
+      form.append(statusImage);
 
       const formData = new FormData(form);
       let body = {};
@@ -519,14 +525,7 @@ window.addEventListener('DOMContentLoaded', function () {
         body[key] = val;
       });
 
-      postData(body,
-        () => {
-          statusMessage.textContent = successMessage;
-        },
-        (error) => {
-          statusMessage.textContent = errorMessage;
-          console.error(error);
-        });
+      let valid = true;
 
       // Валидация номера телефона
       [...form.elements].forEach((elem) => {
@@ -534,11 +533,23 @@ window.addEventListener('DOMContentLoaded', function () {
           const pattern = /^\+?[78]\d{10}$/;
           if (!pattern.test(elem.value)) {
             alert('Введите номер телефона в нужном формате');
+            valid = false;
           }
         }
 
         elem.value = '';
       });
+
+      postData(body, valid,
+        () => {
+          statusMessage.textContent = successMessage;
+          statusImage.setAttribute('src', './images/success.jpg');
+        },
+        (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+          statusImage.setAttribute('src', './images/error.jpg');
+        });
 
     });
   }
