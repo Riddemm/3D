@@ -475,54 +475,119 @@ window.addEventListener('DOMContentLoaded', function () {
   calc(100);
 
   // Отправка ajax-form
+  const form1 = document.getElementById('form1');
+  const form2 = document.getElementById('form2');
+  const form3 = document.getElementById('form3');
 
-  const sendForm = () => {
+  const sendForm = (form) => {
     const errorMessage = 'Что-то пошло не так';
     const loadMessage = 'Загрузка...';
     const successMessage = 'Ваша заявка отправлена';
 
-    const form = document.getElementById('form1');
-
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem';
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      form.append(statusMessage);
-
+    const postData = (body, outputData, errorData) => {
       const request = new XMLHttpRequest();
 
       request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage;
-
         if (request.readyState !== 4) {
           return;
         }
 
         if (request.status === 200) {
-          statusMessage.textContent = successMessage;
+          outputData();
         } else {
-          statusMessage.textContent = errorMessage;
+          errorData(request.status);
         }
       })
 
       request.open('POST', './server.php');
       request.setRequestHeader('Content-Type', 'application/json');
-      const formData = new FormData(form);
-      // request.send(formData);
-
-      // Отправка в формате JSON
-      let body = {};
-
-      formData.forEach((key, val) => {
-        body[key] = val;
-      })
 
       request.send(JSON.stringify(body));
+    }
 
-    })
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      form.append(statusMessage);
+      statusMessage.textContent = loadMessage;
+
+      const formData = new FormData(form);
+      let body = {};
+      formData.forEach((key, val) => {
+        body[key] = val;
+      });
+
+      postData(body,
+        () => {
+          statusMessage.textContent = successMessage;
+        },
+        (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+        });
+
+      // Валидация номера телефона
+      [...form.elements].forEach((elem) => {
+        if (elem.classList.contains('form-phone')) {
+          const pattern = /^\+?[78]\d{10}$/;
+          if (!pattern.test(elem.value)) {
+            alert('Введите номер телефона в нужном формате');
+          }
+        }
+
+        elem.value = '';
+      });
+
+    });
   }
 
-  sendForm();
+  [...document.forms].forEach((form) => {
+    // Запрет ввода символов для имени и сообщения
+    [...form.elements].forEach((elem) => {
+      if (elem.classList.contains('mess') || elem.getAttribute('placeholder') === 'Ваше имя') {
+        const pattern = /^[А-Яа-я\s]+$/;
+        let saveInput = '';
+        elem.addEventListener('input', () => {
+          if (pattern.test(elem.value) || elem.value === '') {
+            saveInput = elem.value;
+          } else {
+            elem.value = saveInput;
+          }
+        })
+      }
+    });
+
+    sendForm(form);
+  })
+
+  //Валидация формы 2 с помощью плагина
+
+  // const valid = new Validator({
+  //   selector: '#form2',
+  //   pattern: {
+  //     phone: /^\+?[78]([-()]*\d){10}$/,
+  //     name: /^[А-Яа-я]+$/
+  //   },
+  //   method: {
+  //     'form2-name': [
+  //       ['pattern', 'name']
+  //     ],
+  //     'form2-phone': [
+  //       ['notEmpty'],
+  //       ['pattern', 'phone']
+  //     ],
+  //     'form2-email': [
+  //       ['notEmpty'],
+  //       ['pattern', 'email']
+  //     ],
+  //     'form2-message': [
+  //       ['notEmpty'],
+  //       ['pattern', 'name']
+  //     ]
+  //   }
+  // });
+  // valid.init();
 
 })
