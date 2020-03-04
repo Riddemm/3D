@@ -475,9 +475,6 @@ window.addEventListener('DOMContentLoaded', function () {
   calc(100);
 
   // Отправка ajax-form
-  const form1 = document.getElementById('form1');
-  const form2 = document.getElementById('form2');
-  const form3 = document.getElementById('form3');
 
   const sendForm = (form) => {
     const errorMessage = 'Что-то пошло не так';
@@ -490,25 +487,33 @@ window.addEventListener('DOMContentLoaded', function () {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem';
 
-    const postData = (body, valid, outputData, errorData) => {
-      const request = new XMLHttpRequest();
+    const postData = (body, valid) => {
 
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
+      return new Promise((resolve, reject) => {
 
-        if (request.status === 200 && valid === true) {
-          outputData();
-        } else {
-          errorData(request.status);
-        }
-      })
+        const request = new XMLHttpRequest();
 
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) {
+            return;
+          }
 
-      request.send(JSON.stringify(body));
+          if (request.status === 200 && valid === true) {
+            statusMessage.textContent = successMessage;
+            statusImage.setAttribute('src', './images/success.jpg');
+            resolve();
+          } else {
+            statusMessage.textContent = errorMessage;
+            statusImage.setAttribute('src', './images/error.jpg')
+            reject(request.status);
+          }
+        })
+
+        request.open('POST', './server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+
+        request.send(JSON.stringify(body));
+      });
     }
 
     form.addEventListener('submit', (event) => {
@@ -540,16 +545,10 @@ window.addEventListener('DOMContentLoaded', function () {
         elem.value = '';
       });
 
-      postData(body, valid,
-        () => {
-          statusMessage.textContent = successMessage;
-          statusImage.setAttribute('src', './images/success.jpg');
-        },
-        (error) => {
-          statusMessage.textContent = errorMessage;
-          console.error(error);
-          statusImage.setAttribute('src', './images/error.jpg');
-        });
+
+
+      postData(body, valid)
+        .catch(error => console.error(error));
 
     });
   }
