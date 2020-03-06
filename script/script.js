@@ -487,33 +487,12 @@ window.addEventListener('DOMContentLoaded', function () {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem';
 
-    const postData = (body, valid) => {
-
-      return new Promise((resolve, reject) => {
-
-        const request = new XMLHttpRequest();
-
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) {
-            return;
-          }
-
-          if (request.status === 200 && valid === true) {
-            statusMessage.textContent = successMessage;
-            statusImage.setAttribute('src', './images/success.jpg');
-            resolve();
-          } else {
-            statusMessage.textContent = errorMessage;
-            statusImage.setAttribute('src', './images/error.jpg')
-            reject(request.status);
-          }
-        })
-
-        request.open('POST', './server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-
-        request.send(JSON.stringify(body));
-      });
+    const postData = (body) => {
+      return fetch('./server.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body),
+      })
     }
 
     form.addEventListener('submit', (event) => {
@@ -547,7 +526,16 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 
-      postData(body, valid)
+      postData(body)
+        .then(response => {
+          if (response.status === 200 && valid === true) {
+            statusMessage.textContent = successMessage;
+            statusImage.setAttribute('src', './images/success.jpg');
+          } else {
+            statusMessage.textContent = errorMessage;
+            statusImage.setAttribute('src', './images/error.jpg')
+          }
+        })
         .catch(error => console.error(error));
 
     });
