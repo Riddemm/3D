@@ -10,7 +10,7 @@ import changeCommandPhoto from './modules/changeCommandPhoto';
 import scroll from './modules/scroll';
 import sendForm from './modules/sendForm';
 
-countTimer('2020-02-29 00:00:01');
+countTimer('2020-03-11 00:00:01');
 toggleMenu();
 togglePopup();
 tabs();

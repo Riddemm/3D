@@ -1,11 +1,11 @@
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
 function countTimer(deadline) {
   let timerHours = document.querySelector('#timer-hours');
   let timerMinutes = document.querySelector('#timer-minutes');
   let timerSeconds = document.querySelector('#timer-seconds');
-
-  let seconds = 0;
-  let minutes = 0;
-  let hours = 0;
 
   // Добавляет 0 в начало, если число меньше 10
   let formatDate = function (date) {

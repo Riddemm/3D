@@ -55,9 +55,15 @@ const sendForm = (form) => {
       .then(response => {
         if (response.status === 200 && valid === true) {
           statusMessage.textContent = successMessage;
+          setTimeout(() => {
+            statusMessage.textContent = '';
+          }, 5000);
           statusImage.setAttribute('src', './images/success.jpg');
         } else {
           statusMessage.textContent = errorMessage;
+          setTimeout(() => {
+            statusMessage.textContent = '';
+          }, 5000);
           statusImage.setAttribute('src', './images/error.jpg')
         }
       })
