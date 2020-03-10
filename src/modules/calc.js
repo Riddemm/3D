@@ -38,25 +38,25 @@ const calc = (price = 100) => {
 
     if (totalOld > total) {
       if (expCount < 10000) {
-        totalOld -= 1000;
+        totalOld -= 5000;
       } else if (expCount < 1000) {
-        totalOld -= 100;
+        totalOld -= 500;
       } else if (expCount < 100) {
-        totalOld -= 10;
+        totalOld -= 50;
       } else if (expCount < 0) {
-        totalOld--;
-      } else {
+        totalOld -= 5;
+      } else {5
         cancelAnimationFrame(interval);
       }
     } else if (totalOld < total) {
       if (expCount > 10000) {
-        totalOld += 1000;
+        totalOld += 5000;
       } else if (expCount > 1000) {
-        totalOld += 100;
+        totalOld += 500;
       } else if (expCount > 100) {
-        totalOld += 10;
+        totalOld += 50;
       } else if (expCount > 0) {
-        totalOld++;
+        totalOld += 5;
       } else {
         cancelAnimationFrame(interval);
       }
@@ -80,7 +80,6 @@ const calc = (price = 100) => {
       input.value = input.value.replace(/D/g, '');
     });
   });
-
 }
 
 export default calc;

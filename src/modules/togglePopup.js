@@ -19,7 +19,7 @@ const togglePopup = () => {
             return;
           }
 
-          popupContent.style.top = timePassed / 10 + 'px';
+          popupContent.style.top = timePassed / 4 + 'px';
         }, 20);
       }
     });

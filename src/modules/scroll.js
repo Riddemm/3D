@@ -1,7 +1,8 @@
 const scroll = () => {
-  const scrollPage = (top, time) => {
-    let start = Date.now(); // время начала
 
+  const scrollPage = (top) => {
+    let start = Date.now(); // время начала
+    
     let timer = setInterval(function () {
       let timePassed = Date.now() - start; // времени прошло
 
@@ -9,8 +10,8 @@ const scroll = () => {
         clearInterval(timer);
         return;
       }
-      document.documentElement.scrollTop += timePassed / 1000;
-    }, time);
+      document.documentElement.scrollTop += timePassed / 10;
+    }, 10);
   }
 
   // Считает координаты с начала документа
@@ -44,23 +45,24 @@ const scroll = () => {
   });
 
   menu.addEventListener('click', (event) => {
+
     event.preventDefault();
     let target = event.target;
 
     if (target === menuServiceLink) {
-      scrollPage(getCoords(menuService).top, 5);
+      scrollPage(getCoords(menuService).top);
     }
     if (target === menuPortfolioLink) {
-      scrollPage(getCoords(menuPortfolio).top, 5);
+      scrollPage(getCoords(menuPortfolio).top);
     }
     if (target === menuCalcLink) {
-      scrollPage(getCoords(menuCalc).top, 5);
+      scrollPage(getCoords(menuCalc).top);
     }
     if (target === menuCommandLink) {
-      scrollPage(getCoords(menuCommand).top, 5);
+      scrollPage(getCoords(menuCommand).top);
     }
     if (target === menuConnectLink) {
-      scrollPage(getCoords(menuConnect).top, 5);
+      scrollPage(getCoords(menuConnect).top);
     }
   });
 }
