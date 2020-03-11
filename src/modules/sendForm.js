@@ -25,6 +25,7 @@ const sendForm = (form) => {
 
     form.append(statusMessage);
     statusMessage.textContent = loadMessage;
+    statusMessage.style.color = 'red';
 
     form.append(statusImage);
 
@@ -52,7 +53,7 @@ const sendForm = (form) => {
     postData(body)
       .then(response => {
         if (response.status === 200 && valid === true) {
-          statusMessage.textContent = successMessage;
+          statusMessage.textContent = successMessage;  
           statusImage.style.display = 'inline';
           statusImage.setAttribute('src', './images/success.jpg');
           setTimeout(() => {
