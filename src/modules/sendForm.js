@@ -49,12 +49,11 @@ const sendForm = (form) => {
       elem.value = '';
     });
 
-
-
     postData(body)
       .then(response => {
         if (response.status === 200 && valid === true) {
           statusMessage.textContent = successMessage;
+          statusImage.style.display = 'inline';
           statusImage.setAttribute('src', './images/success.jpg');
           setTimeout(() => {
             statusMessage.textContent = '';
