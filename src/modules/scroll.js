@@ -5,13 +5,15 @@ const scroll = () => {
     
     let timer = setInterval(function () {
       let timePassed = Date.now() - start; // времени прошло
+      console.log(top);
+      console.log(document.documentElement.scrollTop)
 
       if (document.documentElement.scrollTop > top) {
         clearInterval(timer);
         return;
       }
-      document.documentElement.scrollTop += timePassed / 10;
-    }, 10);
+      document.documentElement.scrollTop += timePassed / 5;
+    }, 1);
   }
 
   // Считает координаты с начала документа

@@ -38,25 +38,25 @@ const calc = (price = 100) => {
 
     if (totalOld > total) {
       if (expCount < 10000) {
-        totalOld -= 5000;
+        totalOld -= 10000;
       } else if (expCount < 1000) {
-        totalOld -= 500;
+        totalOld -= 1000;
       } else if (expCount < 100) {
-        totalOld -= 50;
+        totalOld -= 100;
       } else if (expCount < 0) {
-        totalOld -= 5;
-      } else {5
+        totalOld -= 10;
+      } else {
         cancelAnimationFrame(interval);
       }
     } else if (totalOld < total) {
       if (expCount > 10000) {
-        totalOld += 5000;
+        totalOld += 10000;
       } else if (expCount > 1000) {
-        totalOld += 500;
+        totalOld += 1000;
       } else if (expCount > 100) {
-        totalOld += 50;
+        totalOld += 100;
       } else if (expCount > 0) {
-        totalOld += 5;
+        totalOld += 10;
       } else {
         cancelAnimationFrame(interval);
       }

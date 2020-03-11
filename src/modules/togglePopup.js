@@ -14,12 +14,12 @@ const togglePopup = () => {
         let timer = setInterval(function () {
           let timePassed = Date.now() - start; // времени прошло
 
-          if (timePassed >= 1000) {
-            clearInterval(timer); // закончить анимацию через секунду
+          if (timePassed >= 500) {
+            clearInterval(timer); // закончить анимацию 
             return;
           }
 
-          popupContent.style.top = timePassed / 4 + 'px';
+          popupContent.style.top = timePassed / 2 + 'px';
         }, 20);
       }
     });
