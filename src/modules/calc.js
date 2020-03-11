@@ -7,17 +7,18 @@ const calc = (price = 100) => {
   const calcCount = calcInputs[1];
   const calcDay = calcInputs[2];
   const totalValue = calcBlock.querySelector('#total');
+
   let total = 0;
   let totalOld = 0;
   let interval;
 
   const countSum = () => {
-    let countValue = 1;
+    let countValue = 1; //количество помещений
     let dayValue = 1;
     const typeValue = calcType.options[calcType.selectedIndex].value;
     const squareValue = Number(calcSquare.value);
 
-    if (calcCount.value > 1) {
+    if (calcCount.value && calcCount.value > 1) {
       countValue += (calcCount.value - 1) / 10;
     }
 
@@ -75,6 +76,7 @@ const calc = (price = 100) => {
     }
   })
 
+  // Запрет вводить любые символы кроме цифр
   calcInputs.forEach((input) => {
     input.addEventListener('input', () => {
       input.value = input.value.replace(/D/g, '');

@@ -55,16 +55,18 @@ const sendForm = (form) => {
       .then(response => {
         if (response.status === 200 && valid === true) {
           statusMessage.textContent = successMessage;
+          statusImage.setAttribute('src', './images/success.jpg');
           setTimeout(() => {
             statusMessage.textContent = '';
-          }, 5000);
-          statusImage.setAttribute('src', './images/success.jpg');
+            statusImage.style.display = 'none';
+          }, 2000);
         } else {
           statusMessage.textContent = errorMessage;
+          statusImage.setAttribute('src', './images/error.jpg');
           setTimeout(() => {
             statusMessage.textContent = '';
-          }, 5000);
-          statusImage.setAttribute('src', './images/error.jpg')
+            statusImage.style.display = 'none';
+          }, 2000);
         }
       })
       .catch(error => console.error(error));
